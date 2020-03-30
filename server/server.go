@@ -61,17 +61,11 @@ func LoadSSLCertificates(ssl *TLSConfig) (*SSLCertificate, error) {
 	return &SSLCertificate{Certificate: certificate, CertPool: certPool}, nil
 }
 
-// TLSConfig holds client TLS/SSL configurations to activate SSL support.
-// TLSConfig holds server TLS/SSL configurations to activate SSL support.
 type TLSConfig struct {
-	// ServerName is the server for which certificates has been generated.
 	ServerName string
-	// CertFile is the file path for ssl cert file.
-	CertFile string
-	// KeyFile is the file path for ssl key file.
-	KeyFile string
-	// CAFile is the file path for ssl ca file.
-	CAFile string
+	CertFile   string
+	KeyFile    string
+	CAFile     string
 }
 
 // SSLCertificate holds TLS certificates for the client.
@@ -82,14 +76,11 @@ type SSLCertificate struct {
 
 // Address holds server running ports.
 type Address struct {
-	// GRPCPort is the listening port for GRPC service.
 	GRPCPort int
-	// HTTPPort is the listening port for HTTP service.
 	HTTPPort int
 }
 
 // Server holds gRPC server and HTTP REST gateway.
-// It implements Run and Shutdown for server.
 type Server struct {
 	GRPCServer *grpc.Server
 	Gateway    *RESTGateway
@@ -128,11 +119,6 @@ func WithContext(c context.Context) ServerOption {
 	}
 }
 
-// New creates a server instance with gRPC and HTTP REST gateway instances which
-// has no service registered and has not started to accept requests yet.
-// if TLSConfig is supplied then it creates a TLS/SSL security enabled server.
-// else creates a server without TLS/SSL security.
-// if the server cannot be created an error will be returned.
 func New(addr Address, options ...ServerOption) (*Server, error) {
 	// disallow port 0 in Listen - can't let OS pick random port, as it would
 	// be impossible to map to a container.
@@ -186,12 +172,7 @@ func New(addr Address, options ...ServerOption) (*Server, error) {
 	return srv, nil
 }
 
-// Run starts a gRPC server and HTTP REST gateway to publish registered rpc services.
-// It read gRPC requests and then call the registered handlers to reply to them.
-// if the server cannot be started an error will be returned.
 func (s *Server) Run() error {
-	// check if apps has registered their services or not.
-	// reflection service is already registered on gRPC server so minimum count is 1.
 	if len(s.GRPCServer.GetServiceInfo()) <= 1 {
 		log.Printf("no gRPC services are registered on server")
 	}
@@ -213,9 +194,6 @@ func (s *Server) Run() error {
 	return nil
 }
 
-// Shutdown stops the gRPC server and http gateway. It immediately closes all open connections
-// and listeners. It cancels all active RPCs on the server side and the corresponding
-// pending RPCs on the client side will get notified by connection errors.
 func (s *Server) Shutdown() error {
 	log.Printf("shutting down server")
 	s.GRPCServer.Stop()

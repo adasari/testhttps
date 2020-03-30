@@ -4,12 +4,12 @@ import (
 	"context"
 	"log"
 	"os"
-
-	testpb "testhttps/proto/v1"
-	"testhttps/server"
-	"testhttps/service"
-
+	
+	"github.com/adasari/testhttps/server"
+	"github.com/adasari/testhttps/service"
 	"github.com/spf13/pflag"
+
+	testpb "github.com/adasari/testhttps/proto/v1"
 )
 
 func main() {

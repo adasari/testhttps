@@ -1,4 +1,4 @@
-module testhttps
+module github.com/adasari/testhttps
 
 go 1.12
 

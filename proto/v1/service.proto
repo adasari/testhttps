@@ -22,4 +22,12 @@ service Greeter {
       body: "*"
 		};
   }
+
+  // stream response.
+  rpc SayHelloStream(HelloRequest) returns (stream HelloReply) {
+    option (google.api.http) = {
+      post : "/v1/search/stream"
+      body: "*"
+		};
+  }
 }

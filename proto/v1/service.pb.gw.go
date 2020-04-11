@@ -124,7 +124,7 @@ func RegisterGreeterHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 			return
 		}
 
-		forward_Greeter_SayHello_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Greeter_SayHello_0(ctx, mux, outboundMarshaler, w, req, response_Greeter_SayHello_0{resp}, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -149,6 +149,24 @@ func RegisterGreeterHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 	})
 
 	return nil
+}
+
+type response_Greeter_SayHello_0 struct {
+	proto.Message
+}
+
+func (m response_Greeter_SayHello_0) XXX_ResponseBody() interface{} {
+	response := m.Message.(*HelloReply)
+	return response.Message
+}
+
+type response_Greeter_SayHelloStream_0 struct {
+	proto.Message
+}
+
+func (m response_Greeter_SayHelloStream_0) XXX_ResponseBody() interface{} {
+	response := m.Message.(*HelloReply)
+	return response.Message
 }
 
 var (

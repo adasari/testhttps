@@ -27,6 +27,22 @@ func CustomMatcher(key string) (string, bool) {
 	return newKey, flag
 }
 
+func CustomOutMatcher(key string) (string, bool) {
+	var newKey string
+	var flag bool
+	switch key {
+	case "mykey":
+		newKey, flag = key, true
+		//return key, true
+	default:
+		newKey, flag = runtime.DefaultHeaderMatcher(key)
+	}
+
+	fmt.Printf("headers: key %s , newKey: %s\n", key, newKey)
+
+	return newKey, flag
+}
+
 // newGateway creates and returns a HTTP gateway instance with the given configuration.
 // if http gateway cannot be created an error will be returned.
 func newGateway(addr Address, tlsConfig *TLSConfig, sslCerts *SSLCertificate) (*RESTGateway, error) {
@@ -37,7 +53,7 @@ func newGateway(addr Address, tlsConfig *TLSConfig, sslCerts *SSLCertificate) (*
 
 	mux := http.NewServeMux()
 	// gwmux := runtime.NewServeMux(runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{OrigName:false}))
-	gwmux := runtime.NewServeMux(runtime.WithIncomingHeaderMatcher(CustomMatcher))
+	gwmux := runtime.NewServeMux(runtime.WithIncomingHeaderMatcher(CustomMatcher), runtime.WithOutgoingHeaderMatcher(CustomOutMatcher))
 
 	mux.Handle("/", gwmux)
 

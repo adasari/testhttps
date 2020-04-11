@@ -12,7 +12,6 @@ message HelloReply {
     string test_val = 2;
 }
 
-
 // The greeting service definition
 service Greeter {
   // Sends a greeting
@@ -20,6 +19,7 @@ service Greeter {
     option (google.api.http) = {
       post : "/v1/search"
       body: "*"
+      response_body: "message"
 		};
   }
 
@@ -28,6 +28,7 @@ service Greeter {
     option (google.api.http) = {
       post : "/v1/search/stream"
       body: "*"
+      response_body: "message"
 		};
   }
 }

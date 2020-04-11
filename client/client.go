@@ -75,7 +75,7 @@ func main() {
 	} else {
 		// http
 		// url = fmt.Sprintf("http://%s/v1/search", addr)
-		url = fmt.Sprintf("http://%s/v1/search/stream", addr)
+		url = fmt.Sprintf("http://%s/v1/search", addr)
 	}
 
 	fmt.Printf("url: %v\n", url)
@@ -94,6 +94,7 @@ func main() {
 		os.Exit(0)
 	}
 	// read the response body.
+	fmt.Printf("headers: %+v\n", resp.Header)
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
